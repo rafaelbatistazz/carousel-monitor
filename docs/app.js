@@ -252,7 +252,7 @@ function renderContentTable() {
   const rows  = state.filtered.slice(start, start + PAGE_SIZE);
 
   if (!rows.length) {
-    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">
+    tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state">
       <div class="empty-icon">◈</div>
       <p>Nenhum registro encontrado com esses filtros.</p>
     </div></td></tr>`;
@@ -264,6 +264,15 @@ function renderContentTable() {
     const thumbHtml = thumb
       ? `<img class="thumb-img" src="${esc(thumb)}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'thumb-placeholder\\'>⬡</div>'">`
       : `<div class="thumb-placeholder">${fmt.platform(r.plataforma)}</div>`;
+
+    const metrics = r.metadata?.metrics || {};
+    const likes   = metrics.likes    ?? null;
+    const comments= metrics.comments ?? null;
+    const views   = metrics.videoViewCount ?? metrics.videoPlayCount ?? null;
+
+    const fmtMetric = (n, icon) => n != null
+      ? `<span class="metric-chip">${icon} ${n.toLocaleString('pt-BR')}</span>`
+      : `<span class="metric-chip dim">${icon} —</span>`;
 
     const links = [];
     if (r.link_conteudo)           links.push(`<a class="link-chip" href="${esc(r.link_conteudo)}" target="_blank" rel="noopener">↗ orig</a>`);
@@ -278,6 +287,7 @@ function renderContentTable() {
       <td>${fmt.badge(r.status)}</td>
       <td><span class="cell-mono">${esc(r.arroba_referencia || '—')}</span></td>
       <td>${fmt.score(r.engagement_score)}</td>
+      <td class="metrics-cell">${fmtMetric(likes, '♥')}${fmtMetric(comments, '💬')}${fmtMetric(views, '▶')}</td>
       <td><span class="cell-mono">${esc(r.plataforma || '—')}</span></td>
       <td><span class="cell-mono" style="color:var(--text-dim)">${esc(fmt.trunc(r.template_usado, 20))}</span></td>
       <td><span class="cell-mono">${fmt.date(r.data_extracao || r.created_at)}</span></td>

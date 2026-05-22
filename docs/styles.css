@@ -655,6 +655,23 @@ select.filter-input {
 .score-num.high { color: var(--green); }
 .score-num.low  { color: var(--red); }
 
+/* ── Metrics cell ── */
+.metrics-cell {
+  white-space: nowrap;
+}
+
+.metric-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-right: 8px;
+}
+
+.metric-chip.dim { color: var(--text-dim); }
+
 /* ── Links cell ── */
 .link-cell {
   display: flex;
